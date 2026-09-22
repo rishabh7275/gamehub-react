@@ -8,6 +8,9 @@ import Snake from "./pages/Snake";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Memory from "./pages/Memory";
+import RockPaperScissors from "./pages/RockPaperScissors";
+import Pong from "./pages/Pong";
 
 import "./App.css";
 
@@ -15,7 +18,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme =
       localStorage.getItem("gamehub-theme");
-  
+
     return savedTheme !== "light";
   });
   useEffect(() => {
@@ -27,21 +30,24 @@ function App() {
   return (
     <BrowserRouter>
 
-  <div className={darkMode ? "dark-theme" : "light-theme"}>
-      <Navbar
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+      <div className={darkMode ? "dark-theme" : "light-theme"}>
+        <Navbar
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tic-tac-toe" element={<TicTacToe />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/snake" element={<Snake />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tic-tac-toe" element={<TicTacToe />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/snake" element={<Snake />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/memory"element={<Memory />}/>
+          <Route path="/rock-paper-scissors" element={<RockPaperScissors />}/>
+          <Route path="/pong"element={<Pong />}/>
+        </Routes>
 
-      <Footer />
+        <Footer />
       </div>
     </BrowserRouter>
   );

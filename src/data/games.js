@@ -17,6 +17,26 @@ const games = [
       desc: "Retro canvas snake — eat to grow",
       to: "/snake",
     },
+    {
+      id: "memory",
+      title: "Memory Game",
+      desc: "Find matching pairs",
+      to: "/memory",
+    },
+    
+    {
+      id: "rps",
+      title: "Rock Paper Scissors",
+      desc: "Play against the computer",
+      to: "/rock-paper-scissors",
+    },
+    
+    {
+      id: "pong",
+      title: "Pong",
+      desc: "Classic arcade paddle game",
+      to: "/pong",
+    },
   ];
   
   export default games;

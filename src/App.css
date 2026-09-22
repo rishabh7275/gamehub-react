@@ -1639,3 +1639,213 @@
 
   color: #172033;
 }
+/* =========================
+   MEMORY GAME
+========================= */
+
+.memory-card,
+.rps-card,
+.pong-card {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  text-align: center;
+}
+
+.memory-header,
+.pong-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.memory-header h2,
+.pong-header h2 {
+  margin: 0 0 5px;
+}
+
+.memory-header p,
+.pong-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.memory-score,
+.pong-score {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(124,58,237,0.15);
+  color: #c084fc;
+  font-weight: 700;
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 500px;
+  margin: 0 auto 25px;
+}
+
+.memory-item {
+  height: 100px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #ec4899
+  );
+  color: white;
+  font-size: 35px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.memory-item:hover {
+  transform: scale(1.04);
+}
+
+.memory-item.show {
+  background: #172554;
+}
+
+.memory-complete {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(34,197,94,0.12);
+  color: #86efac;
+}
+
+
+/* =========================
+   ROCK PAPER SCISSORS
+========================= */
+
+.rps-card {
+  max-width: 650px;
+}
+
+.rps-card > p {
+  color: var(--muted);
+}
+
+.rps-score {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 25px 0;
+}
+
+.rps-score div {
+  min-width: 110px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+}
+
+.rps-score span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.rps-score strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 25px;
+  color: #c084fc;
+}
+
+.rps-choices {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 30px 0;
+}
+
+.rps-choices button {
+  width: 90px;
+  height: 90px;
+  border: none;
+  border-radius: 18px;
+  background: rgba(124,58,237,0.15);
+  font-size: 40px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.rps-choices button:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+.rps-result {
+  margin: 25px 0;
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+}
+
+.rps-result h2 {
+  color: #c084fc;
+}
+
+
+/* =========================
+   PONG
+========================= */
+
+.pong-card {
+  max-width: 700px;
+}
+
+.pong-card canvas {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto 25px;
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .memory-card,
+  .rps-card,
+  .pong-card {
+    padding: 20px;
+  }
+
+  .memory-header,
+  .pong-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .memory-item {
+    height: 80px;
+    font-size: 28px;
+  }
+
+  .rps-choices {
+    gap: 10px;
+  }
+
+  .rps-choices button {
+    width: 75px;
+    height: 75px;
+  }
+
+}
