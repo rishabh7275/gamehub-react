@@ -5,50 +5,118 @@ import games from "../data/games";
 
 function Home() {
   return (
-    <main className="container">
+    <main className="home-page">
 
-      {/* Hero Section */}
+      {/* HERO */}
 
-      <section className="hero">
+      <section className="home-hero">
 
-        <div>
-          <p className="hero-tag">
+        <div className="hero-content">
+
+          <p className="hero-badge">
             🎮 WELCOME TO GAMEHUB
           </p>
 
           <h1>
-            Play. Relax. <span>Have Fun.</span>
+            Play. Relax.
+            <br />
+            <span>Have Fun.</span>
           </h1>
 
-          <p className="hero-text">
-            Enjoy quick and simple mini games.
-            Choose a game and start playing instantly.
+          <p className="hero-description">
+            Discover fun and simple mini games
+            built with React.js. Choose a game,
+            start playing and enjoy!
           </p>
 
-          <Link to="/tic-tac-toe" className="btn">
-            Start Playing
-          </Link>
+          <div className="hero-buttons">
+
+            <Link
+              to="/tic-tac-toe"
+              className="btn"
+            >
+              🎮 Start Playing
+            </Link>
+
+            <a
+              href="#games"
+              className="home-outline-btn"
+            >
+              Explore Games
+            </a>
+
+          </div>
+
+        </div>
+
+        <div className="hero-game-icon">
+          🎮
         </div>
 
       </section>
 
 
-      {/* Games */}
+      {/* STATS */}
 
-      <section className="games-section">
+      <section className="home-stats">
 
-        <div className="section-heading">
+        <div className="stat-box">
+          <strong>{games.length}</strong>
+          <span>Games</span>
+        </div>
+
+        <div className="stat-box">
+          <strong>100%</strong>
+          <span>Free</span>
+        </div>
+
+        <div className="stat-box">
+          <strong>24/7</strong>
+          <span>Play Anytime</span>
+        </div>
+
+        <div className="stat-box">
+          <strong>React</strong>
+          <span>Built With</span>
+        </div>
+
+      </section>
+
+
+      {/* GAMES */}
+
+      <section
+        className="home-games"
+        id="games"
+      >
+
+        <div className="home-section-heading">
+
           <div>
-            <h2>🎮 Games</h2>
+
+            <p className="section-label">
+              🕹️ GAME COLLECTION
+            </p>
+
+            <h2>
+              Choose Your Game
+            </h2>
 
             <p>
-              Choose your favorite game and start playing.
+              Pick a game and start playing
+              instantly.
             </p>
+
           </div>
+
+          <span className="game-count">
+            {games.length} Games
+          </span>
+
         </div>
 
 
-        <div className="grid">
+        <div className="home-game-grid">
 
           {games.map((game) => (
             <GameCard
@@ -64,59 +132,189 @@ function Home() {
       </section>
 
 
-      {/* About */}
+      {/* FEATURE SECTION */}
 
-      <section className="card info-section">
+      <section className="home-feature">
 
-        <h2>About GameHub</h2>
+        <div className="feature-icon">
+          ⚡
+        </div>
 
-        <p>
-          GameHub is a simple mini-game website built
-          using React.js. You can play different games
-          directly from your browser.
-        </p>
+        <div>
 
-      </section>
+          <h2>
+            Quick & Easy Gaming
+          </h2>
 
-
-      {/* How to Play */}
-
-      <section className="card info-section">
-
-  <h2>🎮 How to Play</h2>
-
-  <p>
-    Choose a game and start playing in a few simple steps.
-  </p>
-
-  <div className="how-grid">
-
-    <div>
-      <div className="step-icon">1</div>
-      <h3>Choose a Game</h3>
-      <p>
-        Select Tic-Tac-Toe, Quiz, or Snake.
-      </p>
-    </div>
-
-    <div>
-      <div className="step-icon">2</div>
-      <h3>Start Playing</h3>
-      <p>
-        Follow the game instructions and play.
-      </p>
-    </div>
-
-    <div>
-      <div className="step-icon">3</div>
-        <h3>Have Fun</h3>
-         <p>
-             Try to improve your score and enjoy!
+          <p>
+            No complicated setup. Just choose
+            your favorite game and start playing
+            directly in your browser.
           </p>
-         </div>
 
-     </div>
+        </div>
+
       </section>
+
+
+      {/* HOW TO PLAY */}
+
+      <section className="home-how">
+
+        <div className="home-section-heading">
+
+          <div>
+
+            <p className="section-label">
+              🎮 SIMPLE STEPS
+            </p>
+
+            <h2>
+              How to Play
+            </h2>
+
+            <p>
+              Start playing in just three
+              simple steps.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div className="home-steps">
+
+          <div className="home-step">
+
+            <div className="home-step-number">
+              01
+            </div>
+
+            <div className="home-step-icon">
+              🎯
+            </div>
+
+            <h3>
+              Choose a Game
+            </h3>
+
+            <p>
+              Select any game from the GameHub
+              collection.
+            </p>
+
+          </div>
+
+
+          <div className="home-step">
+
+            <div className="home-step-number">
+              02
+            </div>
+
+            <div className="home-step-icon">
+              🕹️
+            </div>
+
+            <h3>
+              Start Playing
+            </h3>
+
+            <p>
+              Follow the instructions and start
+              playing instantly.
+            </p>
+
+          </div>
+
+
+          <div className="home-step">
+
+            <div className="home-step-number">
+              03
+            </div>
+
+            <div className="home-step-icon">
+              🏆
+            </div>
+
+            <h3>
+              Enjoy & Improve
+            </h3>
+
+            <p>
+              Play again and try to improve your
+              score.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* ABOUT */}
+
+      <section className="home-about">
+
+        <div className="about-icon">
+          🎮
+        </div>
+
+        <div>
+
+          <p className="section-label">
+            ABOUT GAMEHUB
+          </p>
+
+          <h2>
+            One Place. Many Games.
+          </h2>
+
+          <p>
+            GameHub is a mini-games website built
+            using React.js. It includes different
+            interactive games with a clean,
+            responsive and user-friendly interface.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      {/* FINAL CTA */}
+
+      <section className="home-cta">
+
+        <div>
+
+          <p className="section-label">
+            READY TO PLAY?
+          </p>
+
+          <h2>
+            Let the Games Begin! 🎮
+          </h2>
+
+          <p>
+            Choose your favorite game and start
+            playing right now.
+          </p>
+
+        </div>
+
+        <Link
+          to="/tic-tac-toe"
+          className="btn"
+        >
+          Play Now →
+        </Link>
+
+      </section>
+
     </main>
   );
 }

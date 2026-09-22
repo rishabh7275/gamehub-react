@@ -1,18 +1,12 @@
 import { NavLink } from "react-router-dom";
 
-function Navbar({
-  darkMode,
-  setDarkMode,
-}) {
+function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="navbar">
 
       {/* Logo */}
       <div className="logo">
-        <div>
-          <h2>GAMEHUB</h2>
-          <p>Play quick mini games</p>
-        </div>
+        <h2>🎮 GAMEHUB</h2>
       </div>
 
       {/* Navigation */}
@@ -27,38 +21,54 @@ function Navbar({
           Home
         </NavLink>
 
-        <NavLink
-          to="/tic-tac-toe"
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
-        >
-          Tic-Tac-Toe
-        </NavLink>
+        <div className="games-menu">
 
-        <NavLink
-          to="/quiz"
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
-        >
-          Quiz
-        </NavLink>
+          <button
+            type="button"
+            className="games-menu-btn"
+          >
+            Games <span>⌄</span>
+          </button>
 
-        <NavLink
-          to="/snake"
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
-        >
-          Snake
-        </NavLink>
+          <div className="games-dropdown">
+
+            <NavLink to="/tic-tac-toe">
+              ❌ Tic-Tac-Toe
+            </NavLink>
+
+            <NavLink to="/quiz">
+              🧠 Quiz
+            </NavLink>
+
+            <NavLink to="/snake">
+              🐍 Snake
+            </NavLink>
+
+            <NavLink to="/memory">
+              🧠 Memory
+            </NavLink>
+
+            <NavLink to="/rock-paper-scissors">
+              ✊ Rock Paper Scissors
+            </NavLink>
+
+            <NavLink to="/pong">
+              🏓 Pong
+            </NavLink>
+
+            <NavLink to="/chess">
+              ♟️ Chess
+            </NavLink>
+
+          </div>
+
+        </div>
 
       </div>
 
-      {/* Theme Button */}
-
+      {/* Theme */}
       <button
+        type="button"
         className="theme-btn"
         onClick={() =>
           setDarkMode((value) => !value)

@@ -37,6 +37,12 @@ const games = [
       desc: "Classic arcade paddle game",
       to: "/pong",
     },
+    {
+      id: "chess",
+      title: "Chess",
+      desc: "Classic two player chess game",
+      to: "/chess",
+    },
   ];
   
   export default games;
