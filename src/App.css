@@ -3091,3 +3091,72 @@
   .light-theme .not-found p {
     color: #64748b;
   }
+  .game-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  
+  .game-image {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  
+  .game-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .game-info {
+    flex: 1;
+  }
+  
+  .game-info h3 {
+    margin: 0 0 10px;
+  }
+  
+  .game-info p {
+    margin: 0;
+  }
+  .game-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  .game-card-image {
+    width: 180px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  
+  .game-card-content {
+    flex: 1;
+  }
+  
+  .game-card-content h3 {
+    margin-bottom: 10px;
+  }
+  
+  .game-card-content p {
+    margin-bottom: 15px;
+  }
+  .chess-square.legal-move {
+    box-shadow: inset 0 0 0 4px rgba(255, 215, 0, 0.6);
+  }
+  
+  .chess-message {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: 600;
+  }

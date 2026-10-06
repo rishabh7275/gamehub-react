@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-
-import GameCard from "../components/GameCard";
 import games from "../data/games";
-
+import GameCard from "../components/GameCard";
 function Home() {
   return (
     <main className="home-page">
@@ -124,6 +122,7 @@ function Home() {
               title={game.title}
               desc={game.desc}
               to={game.to}
+              image={game.image}
             />
           ))}
 

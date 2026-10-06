@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import questions from "../data/question";
+import { useGameStore } from "../store/gameStore";
 
 function Quiz() {
   const [current, setCurrent] = useState(0);
@@ -8,11 +9,8 @@ function Quiz() {
   const [time, setTime] = useState(10);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
-  const [bestScore, setBestScore] = useState(() => {
-    const savedScore = localStorage.getItem("quiz-best-score");
-
-    return savedScore ? Number(savedScore) : 0;
-  });
+  // Consume best score and updater from Zustand store
+  const { quizHighScore: bestScore, updateQuizHighScore } = useGameStore();
 
   // Timer
   useEffect(() => {
@@ -40,15 +38,7 @@ function Quiz() {
       setSelectedAnswer(null);
     } else {
       setFinished(true);
-
-      if (finalScore > bestScore) {
-        setBestScore(finalScore);
-
-        localStorage.setItem(
-          "quiz-best-score",
-          finalScore
-        );
-      }
+      updateQuizHighScore(finalScore);
     }
   }
 

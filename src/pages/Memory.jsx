@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useGameStore } from "../store/gameStore";
 
 const cards = [
   "🍎",
@@ -31,6 +32,9 @@ function Memory() {
   const [matched, setMatched] = useState([]);
 
   const [moves, setMoves] = useState(0);
+
+  // Consume memory stats and actions from Zustand store
+  const { memoryBestMoves, recordMemoryWin } = useGameStore();
 
   function handleCardClick(index) {
     if (
@@ -84,6 +88,13 @@ function Memory() {
   const completed =
     matched.length === 6;
 
+  // Record win and best moves in Zustand store when game completes
+  useEffect(() => {
+    if (completed && moves > 0) {
+      recordMemoryWin(moves);
+    }
+  }, [completed, moves, recordMemoryWin]);
+
   return (
     <main className="container">
 
@@ -102,7 +113,7 @@ function Memory() {
           </div>
 
           <div className="memory-score">
-            Moves: {moves}
+            Moves: {moves} {memoryBestMoves !== null ? `| Best: ${memoryBestMoves}` : ""}
           </div>
 
         </div>

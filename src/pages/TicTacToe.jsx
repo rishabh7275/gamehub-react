@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useGameStore } from "../store/gameStore";
 
 const initialBoard = Array(9).fill(null);
 
@@ -31,14 +32,8 @@ function TicTacToe() {
   const [board, setBoard] = useState(initialBoard);
   const [xNext, setXNext] = useState(true);
 
-  const [score, setScore] = useState(() => {
-    const savedScore =
-      localStorage.getItem("ttt-score");
-
-    return savedScore
-      ? JSON.parse(savedScore)
-      : { X: 0, O: 0 };
-  });
+  // Consume score state and actions from Zustand store
+  const { score, increaseScore, resetScore } = useGameStore();
 
   const winner = getWinner(board);
   const draw = !winner && board.every(Boolean);
@@ -61,40 +56,14 @@ function TicTacToe() {
     setXNext(true);
   }
 
-  function resetScore() {
-    setScore({
-      X: 0,
-      O: 0,
-    });
-
-    localStorage.setItem(
-      "ttt-score",
-      JSON.stringify({
-        X: 0,
-        O: 0,
-      })
-    );
-  }
-
-  // Update score after winner
+  // Update score in Zustand store when there is a winner
   useEffect(() => {
     if (!winner) {
       return;
     }
 
-    setScore((oldScore) => ({
-      ...oldScore,
-      [winner]: oldScore[winner] + 1,
-    }));
-  }, [winner]);
-
-  // Save score
-  useEffect(() => {
-    localStorage.setItem(
-      "ttt-score",
-      JSON.stringify(score)
-    );
-  }, [score]);
+    increaseScore(winner);
+  }, [winner, increaseScore]);
 
   return (
     <main className="container">

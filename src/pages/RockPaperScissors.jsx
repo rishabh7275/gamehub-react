@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGameStore } from "../store/gameStore";
 
 const choices = [
   "✊",
@@ -16,11 +17,8 @@ function RockPaperScissors() {
   const [result, setResult] =
     useState("");
 
-  const [score, setScore] =
-    useState({
-      player: 0,
-      computer: 0,
-    });
+  // Consume RPS score state and actions from Zustand store
+  const { rpsScore: score, increaseRpsScore, resetRpsScore } = useGameStore();
 
   function playGame(choice) {
     const computerChoice =
@@ -49,20 +47,10 @@ function RockPaperScissors() {
 
     if (playerWins) {
       setResult("You Win! 🎉");
-
-      setScore((oldScore) => ({
-        ...oldScore,
-        player:
-          oldScore.player + 1,
-      }));
+      increaseRpsScore("player");
     } else {
       setResult("Computer Wins!");
-
-      setScore((oldScore) => ({
-        ...oldScore,
-        computer:
-          oldScore.computer + 1,
-      }));
+      increaseRpsScore("computer");
     }
   }
 
@@ -70,11 +58,7 @@ function RockPaperScissors() {
     setPlayer("");
     setComputer("");
     setResult("");
-
-    setScore({
-      player: 0,
-      computer: 0,
-    });
+    resetRpsScore();
   }
 
   return (

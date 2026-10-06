@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useGameStore } from "../store/gameStore";
 
 const WIDTH = 600;
 const HEIGHT = 350;
@@ -6,10 +7,8 @@ const HEIGHT = 350;
 function Pong() {
   const canvasRef = useRef(null);
 
-  const [score, setScore] = useState({
-    player: 0,
-    computer: 0,
-  });
+  // Consume Pong score state and actions from Zustand store
+  const { pongScore: score, increasePongScore, resetPongScore } = useGameStore();
 
   const keys = useRef({
     up: false,
@@ -143,12 +142,7 @@ function Pong() {
       // Computer scores
 
       if (ballX < 0) {
-
-        setScore((oldScore) => ({
-          ...oldScore,
-          computer:
-            oldScore.computer + 1,
-        }));
+        increasePongScore("computer");
 
         ballX = WIDTH / 2;
         ballY = HEIGHT / 2;
@@ -159,12 +153,7 @@ function Pong() {
       // Player scores
 
       if (ballX > WIDTH) {
-
-        setScore((oldScore) => ({
-          ...oldScore,
-          player:
-            oldScore.player + 1,
-        }));
+        increasePongScore("player");
 
         ballX = WIDTH / 2;
         ballY = HEIGHT / 2;
@@ -274,10 +263,7 @@ function Pong() {
   }, []);
 
   function resetGame() {
-    setScore({
-      player: 0,
-      computer: 0,
-    });
+    resetPongScore();
   }
 
   return (

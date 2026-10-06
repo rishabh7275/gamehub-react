@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useGameStore } from "../store/gameStore";
 
 const COLS = 20;
 const ROWS = 20;
@@ -48,14 +49,8 @@ function Snake() {
 
   const [score, setScore] = useState(0);
 
-  const [highScore, setHighScore] = useState(() => {
-    const savedScore =
-      localStorage.getItem("snake-high-score");
-
-    return savedScore
-      ? Number(savedScore)
-      : 0;
-  });
+  // Consume Snake high score and updater from Zustand store
+  const { snakeHighScore: highScore, updateSnakeHighScore } = useGameStore();
 
   const [running, setRunning] = useState(true);
 
@@ -222,24 +217,7 @@ function Snake() {
             const newScore =
               oldScore + 1;
 
-            setHighScore(
-              (oldHighScore) => {
-
-                if (
-                  newScore >
-                  oldHighScore
-                ) {
-                  localStorage.setItem(
-                    "snake-high-score",
-                    String(newScore)
-                  );
-
-                  return newScore;
-                }
-
-                return oldHighScore;
-              }
-            );
+            updateSnakeHighScore(newScore);
 
             return newScore;
           });

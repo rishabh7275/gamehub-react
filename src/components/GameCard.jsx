@@ -1,17 +1,31 @@
 import { Link } from "react-router-dom";
 
-function GameCard({ title, desc, to }) {
+function GameCard({ title, desc, to, image }) {
   return (
-    <Link to={to} className="card game-card">
-      <div>
+    <div className="game-card">
+
+      <img
+        src={image}
+        alt={title}
+        className="game-card-image"
+      />
+
+      <div className="game-card-content">
+
         <h3>{title}</h3>
+
         <p>{desc}</p>
+
+        <Link
+          to={to}
+          className="game-card-btn"
+        >
+          Play Now →
+        </Link>
+
       </div>
 
-      <div className="game-icon">
-        {title.slice(0, 2).toUpperCase()}
-      </div>
-    </Link>
+    </div>
   );
 }
 

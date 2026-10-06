@@ -1,59 +1,76 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Chess } from "chess.js";
+import { useGameStore } from "../store/gameStore";
 
-const initialBoard = [
-  ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-  ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-  ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
-];
+const pieceSymbols = {
+  w: {
+    k: "♔",
+    q: "♕",
+    r: "♖",
+    b: "♗",
+    n: "♘",
+    p: "♙",
+  },
+  b: {
+    k: "♚",
+    q: "♛",
+    r: "♜",
+    b: "♝",
+    n: "♞",
+    p: "♟",
+  },
+};
 
-const whitePieces = [
-  "♔",
-  "♕",
-  "♖",
-  "♗",
-  "♘",
-  "♙",
-];
+function ChessGame() {
+  const gameRef = useRef(new Chess());
 
-const blackPieces = [
-  "♚",
-  "♛",
-  "♜",
-  "♝",
-  "♞",
-  "♟",
-];
+  const [board, setBoard] = useState(
+    gameRef.current.board()
+  );
 
-function Chess() {
-  const [board, setBoard] = useState(initialBoard);
   const [selected, setSelected] = useState(null);
-  const [turn, setTurn] = useState("white");
 
-  function isWhite(piece) {
-    return whitePieces.includes(piece);
-  }
+  const [turn, setTurn] = useState("w");
 
-  function isBlack(piece) {
-    return blackPieces.includes(piece);
-  }
+  const [gameOver, setGameOver] = useState(false);
 
+  const [message, setMessage] = useState("");
+
+  const {
+    chessScore,
+    increaseChessScore,
+    resetChessScore,
+  } = useGameStore();
+
+  // Check if selected piece belongs to current player
   function isCurrentPlayer(piece) {
-    if (turn === "white") {
-      return isWhite(piece);
+    if (!piece) {
+      return false;
     }
 
-    return isBlack(piece);
+    return piece.color === turn;
+  }
+
+  // Get all legal moves for selected piece
+  function getLegalMoves(square) {
+    return gameRef.current.moves({
+      square,
+      verbose: true,
+    });
   }
 
   function handleSquareClick(row, col) {
-    const piece = board[row][col];
+    if (gameOver) {
+      return;
+    }
 
-    // Select a piece
+    const square =
+      String.fromCharCode(97 + col) +
+      (8 - row);
+
+    const piece = gameRef.current.get(square);
+
+    // No piece selected yet
     if (!selected) {
       if (!piece) {
         return;
@@ -63,67 +80,124 @@ function Chess() {
         return;
       }
 
-      setSelected({
-        row,
-        col,
-      });
-
+      setSelected(square);
       return;
     }
 
-    // Click same piece again
-    if (
-      selected.row === row &&
-      selected.col === col
-    ) {
+    // Click same square again
+    if (selected === square) {
       setSelected(null);
       return;
     }
 
-    const selectedPiece =
-      board[selected.row][selected.col];
-
-    // Select another own piece
+    // Click another own piece
     if (piece && isCurrentPlayer(piece)) {
-      setSelected({
-        row,
-        col,
+      setSelected(square);
+      return;
+    }
+
+    // Check whether move is legal
+    const legalMoves = getLegalMoves(selected);
+
+    const isLegalMove = legalMoves.some(
+      (move) => move.to === square
+    );
+
+    if (!isLegalMove) {
+      setMessage("❌ Invalid move");
+      return;
+    }
+
+    // Make the move
+    try {
+      gameRef.current.move({
+        from: selected,
+        to: square,
+        promotion: "q",
       });
+    } catch (error) {
+      setMessage("❌ Invalid move");
+      return;
+    }
+
+    // Update board
+    setBoard(gameRef.current.board());
+
+    setSelected(null);
+
+    // Check game status
+    if (gameRef.current.isCheckmate()) {
+      const winner =
+        gameRef.current.turn() === "w"
+          ? "black"
+          : "white";
+
+      setGameOver(true);
+
+      setMessage(
+        `🏆 Checkmate! ${winner === "white" ? "White" : "Black"} wins!`
+      );
+
+      increaseChessScore(winner);
 
       return;
     }
 
-    // Move piece
-    const newBoard = board.map((line) => [
-      ...line,
-    ]);
+    if (gameRef.current.isDraw()) {
+      setGameOver(true);
+      setMessage("🤝 Game Draw!");
+      return;
+    }
 
-    newBoard[row][col] = selectedPiece;
+    if (gameRef.current.inCheck()) {
+      setMessage("⚠️ Check!");
+    } else {
+      setMessage("");
+    }
 
-    newBoard[selected.row][selected.col] =
-      null;
-
-    setBoard(newBoard);
-
-    setSelected(null);
-
-    setTurn(
-      turn === "white"
-        ? "black"
-        : "white"
-    );
+    // Change turn
+    setTurn(gameRef.current.turn());
   }
 
   function resetGame() {
-    setBoard(initialBoard);
+    gameRef.current.reset();
+
+    setBoard(
+      gameRef.current.board()
+    );
+
     setSelected(null);
-    setTurn("white");
+
+    setTurn("w");
+
+    setGameOver(false);
+
+    setMessage("");
+  }
+
+  function isLegalDestination(row, col) {
+    if (!selected) {
+      return false;
+    }
+
+    const square =
+      String.fromCharCode(97 + col) +
+      (8 - row);
+
+    const legalMoves =
+      getLegalMoves(selected);
+
+    return legalMoves.some(
+      (move) => move.to === square
+    );
   }
 
   return (
     <main className="container">
 
       <div className="chess-card">
+
+        {/* HEADER */}
 
         <div className="chess-header">
 
@@ -136,22 +210,56 @@ function Chess() {
           </div>
 
           <div className="chess-turn">
-            {turn === "white"
-              ? "⚪ White's Turn"
-              : "⚫ Black's Turn"}
+
+            <div>
+              {turn === "w"
+                ? "⚪ White's Turn"
+                : "⚫ Black's Turn"}
+            </div>
+
+            <div
+              style={{
+                fontSize: "0.88rem",
+                marginTop: "4px",
+                opacity: 0.85,
+              }}
+            >
+              ⚪ {chessScore.white} — ⚫{" "}
+              {chessScore.black}
+            </div>
+
           </div>
 
         </div>
+
+        {/* MESSAGE */}
+
+        {message && (
+          <div className="chess-message">
+            {message}
+          </div>
+        )}
+
+        {/* BOARD */}
 
         <div className="chess-board">
 
           {board.map((row, rowIndex) =>
             row.map((piece, colIndex) => {
 
+              const square =
+                String.fromCharCode(
+                  97 + colIndex
+                ) + (8 - rowIndex);
+
               const isSelected =
-                selected &&
-                selected.row === rowIndex &&
-                selected.col === colIndex;
+                selected === square;
+
+              const isLegal =
+                isLegalDestination(
+                  rowIndex,
+                  colIndex
+                );
 
               const squareColor =
                 (rowIndex + colIndex) % 2 === 0
@@ -160,10 +268,14 @@ function Chess() {
 
               return (
                 <button
-                  key={`${rowIndex}-${colIndex}`}
+                  key={square}
                   className={`chess-square ${squareColor} ${
                     isSelected
                       ? "selected"
+                      : ""
+                  } ${
+                    isLegal
+                      ? "legal-move"
                       : ""
                   }`}
                   onClick={() =>
@@ -173,13 +285,21 @@ function Chess() {
                     )
                   }
                 >
-                  {piece}
+
+                  {piece
+                    ? pieceSymbols[piece.color][
+                        piece.type
+                      ]
+                    : ""}
+
                 </button>
               );
             })
           )}
 
         </div>
+
+        {/* CONTROLS */}
 
         <div className="chess-controls">
 
@@ -190,11 +310,18 @@ function Chess() {
             🔄 New Game
           </button>
 
+          <button
+            className="btn secondary-btn"
+            onClick={resetChessScore}
+          >
+            🗑️ Reset Score
+          </button>
+
         </div>
 
         <p className="chess-tip">
-          💡 Click a piece and then click another
-          square to move it.
+          💡 Select a piece to see its legal
+          moves, then choose a highlighted square.
         </p>
 
       </div>
@@ -203,4 +330,4 @@ function Chess() {
   );
 }
 
-export default Chess;
+export default ChessGame;
